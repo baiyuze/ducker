@@ -4,7 +4,7 @@
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "bash:install": "chmod 777 install.sh && bash install.sh",
+    "bash": "chmod 777 install.sh && bash install.sh",
     "dev": "cd web && npm start & electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make"
