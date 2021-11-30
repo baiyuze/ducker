@@ -6,6 +6,7 @@
   "scripts": {
     "bash": "chmod 777 install.sh && bash install.sh",
     "dev": "cd web && npm start & electron-forge start",
+    "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
@@ -28,7 +29,15 @@
     "electron": "^15.3.0"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "agentkeepalive": "^4.1.4",
+    "electron-squirrel-startup": "^1.0.0",
+    "http-proxy": "^1.18.1",
+    "mini-proxy": "^1.0.4",
+    "mkdirp": "^1.0.4",
+    "node-forge": "^0.10.0",
+    "tunnel-agent": "^0.6.0",
+    "underscore": "^1.13.1",
+    "urllib": "^2.38.0"
   },
   "config": {
     "forge": {

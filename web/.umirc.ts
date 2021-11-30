@@ -17,7 +17,7 @@ export default defineConfig({
   //   { src: './renderer.js' },
   //   { content: 'window.routerBase = "/"',charset: 'utf-8' }
   // ],
-  layout: {},
+  // layout: {},
   routes: [
     { path: '/', component: '@/pages/index' },
   ],
