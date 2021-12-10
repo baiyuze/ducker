@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>spy-debugger</title>
+    <style>
+        html,body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overscroll-behavior: none;
+        }
+        .container {
+            height: 100%;
+            width: 100%;
+        }
+        .control-bar {
+            padding-left: 3px;
+            height: 99%;
+            width: 3%;
+            display: inline-block;
+        }
+        .monitor {
+            display: inline-block;
+            height: 100%;
+            width: 95%;
+        }
+        .weinre-iframe, .anyproxy-iframe{
+            height: 99%;
+            width: 100%;
+        }
+
+        .control-bar-wrap{
+            height: 100%;
+            display: table;
+        }
+        .control-bar-container {
+            display: table-cell;
+            vertical-align: middle;
+            border-right: #bbb4b4 2px solid;
+        }
+        .control-bar-btn {
+            text-align: center;
+            margin: 8px 4px;
+            padding: 20px 4px;
+            cursor: pointer;
+            border: #42b983 2px solid;
+            transition: background-color 0.5s, color 0.5s;
+            -moz-transition: background-color 0.5s, color 0.5s; /* Firefox 4 */
+            -webkit-transition: background-color 0.5s, color 0.5s; /* Safari 和 Chrome */
+            -o-transition: background-color 0.5s, color 0.5s;
+        }
+        .control-bar-btn.off:hover {
+            color: #ffffff;
+            background-color: #42b983;
+            border-radius: 5px;
+
+        }
+        .control-bar-btn.on {
+            color: #ffffff;
+            background-color: #42b983;
+            border-radius: 5px;
+        }
+        .control-bar-btn.off {
+            color: #42b983;
+            background-color: #ffffff;
+            border-radius: 5px;
+        }
+        svg:hover {
+            fill: #111;
+        }
+        .options-btn {
+            margin: auto;
+            width: 28px;
+            top:10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="control-bar">
+            <div class="control-bar-wrap">
+                <div class="control-bar-container">
+                    <div class="options-btn">
+                    </div>
+                    <div id="weinreBtn" class="spy-debugger-btn control-bar-btn on">
+                        页面调试
+                    </div>
+                    <div id="anyProxyBtn" class="any-proxy-btn control-bar-btn off">
+                        请求抓包
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="monitor">
+            <div id="weinreIframe" class="weinre-iframe" >
+                <iframe src="<%= weinreUrl %>" frameborder="0" height="100%" width="100%" ></iframe>
+            </div>
+            <div id="anyProxyIframe" class="anyproxy-iframe" style="display:none;">
+                <iframe src="<%= anyProxyUrl %>" frameborder="0" height="100%" width="100%" ></iframe>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+var weinreBtn = document.getElementById('weinreBtn');
+var anyProxyBtn = document.getElementById('anyProxyBtn');
+var weinreIframe = document.getElementById('weinreIframe');
+var anyProxyIframe = document.getElementById('anyProxyIframe');
+
+weinreBtn.onclick=function(){
+    weinreIframe.style.display = 'block';
+    anyProxyIframe.style.display = 'none';
+    weinreBtn.className = weinreBtn.className.replace(new RegExp('(?:^|\\s)'+ 'off' + '(?:\\s|$)'), ' ');
+    weinreBtn.className = weinreBtn.className.replace(new RegExp('(?:^|\\s)'+ 'on' + '(?:\\s|$)'), ' ');
+    weinreBtn.className += " on";
+
+    anyProxyBtn.className = anyProxyBtn.className.replace(new RegExp('(?:^|\\s)'+ 'on' + '(?:\\s|$)'), ' ');
+    anyProxyBtn.className = anyProxyBtn.className.replace(new RegExp('(?:^|\\s)'+ 'off' + '(?:\\s|$)'), ' ');
+    anyProxyBtn.className += " off";
+}
+
+anyProxyBtn.onclick=function(){
+    weinreIframe.style.display = 'none';
+    anyProxyIframe.style.display = 'block';
+    anyProxyBtn.className = anyProxyBtn.className.replace(new RegExp('(?:^|\\s)'+ 'off' + '(?:\\s|$)'), ' ');
+    anyProxyBtn.className = anyProxyBtn.className.replace(new RegExp('(?:^|\\s)'+ 'on' + '(?:\\s|$)'), ' ');
+    anyProxyBtn.className += " on";
+    weinreBtn.className = weinreBtn.className.replace(new RegExp('(?:^|\\s)'+ 'on' + '(?:\\s|$)'), ' ');
+    weinreBtn.className = weinreBtn.className.replace(new RegExp('(?:^|\\s)'+ 'off' + '(?:\\s|$)'), ' ');
+    weinreBtn.className += " off";
+}
+
+</script>
+</html>

@@ -1,0 +1,7 @@
+before_install:
+- npm install babel-cli babel-preset-es2015 mocha
+language: node_js
+node_js:
+  - "6"
+  - "8"
+  - "10"

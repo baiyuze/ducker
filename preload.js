@@ -1,15 +1,33 @@
-const startWatchService = require('./app/index')
+const startProxyService = require('./spy-debugger/src/index')
+// const eventEmit = require()
 
-startWatchService()
-// All of the Node.js APIs are available in the preload process.
-// It has the same sandbox as a Chrome extension.
-window.addEventListener('DOMContentLoaded', () => {
-  const replaceText = (selector, text) => {
-    const element = document.getElementById(selector)
-    if (element) element.innerText = text
+startProxyService((port) => {
+  // 创建iframe标签
+  const iframe = document.createElement('iframe');
+  iframe.src = `http://127.0.0.1:${port}`;
+  iframe.style.boder = 0;
+  iframe.width = '100%';
+  iframe.height = '100%';
+  const content = document.querySelector('#iframe-content');
+  iframe.setAttribute('frameborder', 0)
+  content.appendChild(iframe)
+  iframe.onload = () => {
+    const load = document.querySelector('.loadding')
+    console.log(load,'load')
+    load.style.display = 'none'
   }
 
-  for (const type of ['chrome', 'node', 'electron']) {
-    replaceText(`${type}-version`, process.versions[type])
-  }
 })
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const replaceText = (selector, text) => {
+      const element = document.getElementById(selector)
+      if (element) element.innerText = text
+    }
+
+    for (const type of ['chrome', 'node', 'electron']) {
+      replaceText(`${type}-version`, process.versions[type])
+    }
+ 
+  })
+

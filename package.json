@@ -30,8 +30,11 @@
   },
   "dependencies": {
     "agentkeepalive": "^4.1.4",
+    "charset": "^1.0.1",
     "electron-squirrel-startup": "^1.0.0",
     "http-proxy": "^1.18.1",
+    "iconv-lite": "^0.6.3",
+    "jschardet": "^3.0.0",
     "mini-proxy": "^1.0.4",
     "mkdirp": "^1.0.4",
     "node-forge": "^0.10.0",

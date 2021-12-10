@@ -1,1 +1,0 @@
-http://www.dirtdon.com/Authenticate/
