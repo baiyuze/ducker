@@ -166,6 +166,7 @@ module.exports = RemotePanel = (function(_super) {
   };
 // 属性
   RemotePanel.prototype.setServerProperties = function(properties) {
+    
     // var aVal, finalVal, key, keys, table, val, _i, _j, _len, _len1;
     // table = "<table>";
     // keys = [];

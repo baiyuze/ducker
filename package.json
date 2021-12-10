@@ -8,6 +8,7 @@
     "dev": "cd web && npm start & electron-forge start",
     "start": "electron-forge start",
     "package": "electron-forge package",
+    "build:exe": "electron-forge package --platform=win32 --arch=x64",
     "make": "electron-forge make"
   },
   "repository": "https://github.com/electron/electron-quick-start",
