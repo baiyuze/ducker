@@ -44,7 +44,7 @@ Step 1: The mobile and PC must be under the same network (both of devices connec
 
 Step 2: Input `spy-debugger` in the command line and input the address on the brower according the command line's tip.
 
-Step 3: Set up proxy on the mobile device. The proxy IP address must be same to the PC device. the port must be `spy-debugger`'s start port(default port: 9888).
+Step 3: Set up proxy on the mobile device. The proxy IP address must be same to the PC device. the port must be `spy-debugger`'s start port(default port: ).
 
 Step 4: Install certification to your mobile phone. **note: moblie device must be set up well the proxy first and browe `http://spydebugger.com/cert` by the default brower on the phone.[`(QR code)`](demo/img/QRCodeForCert.png)Install certification**（Only the first time need to install it.)
 
@@ -53,7 +53,7 @@ Step 5: Use any installed browers on the mobile device to open the web page that
 Manual Options
 ------------
 #### Port
-(Default Port: 9888)
+(Default Port: 56231)
 ```
 spy-debugger -p 8888
 ```

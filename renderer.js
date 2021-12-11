@@ -1,6 +1,15 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// No Node.js APIs are available in this process because
-// `nodeIntegration` is turned off. Use `preload.js` to
-// selectively enable features needed in the rendering
-// process.
+
+
+const {ipcRenderer} = require('electron')
+const { SYSTEM_PROXY_START, SYSTEM_PROXY_CLOSE } = require('./config')
+ipcRenderer.on(SYSTEM_PROXY_START, (event, message) => {
+  const myNotification = new Notification('通知', {
+    body: message
+  })
+})
+
+ipcRenderer.on(SYSTEM_PROXY_CLOSE, (event, message) => {
+  const myNotification = new Notification('系统通知', {
+    body: message
+  })
+})

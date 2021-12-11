@@ -6,13 +6,14 @@ var program = require('commander');
 var weinreDelegate = require('./weinre/weinreDelegate');
 var colors = require('colors');
 var http = require('http');
+const { SYSTEM_PROT } = require('../../config/index')
 
 function startProxyServer(callbackPort) {
     program.version(require('../package.json').version).option('-p, --port [value]', 'start port').option('-i, --showIframe [value]', 'spy iframe window').option('-b, --autoDetectBrowser [value]', 'Auto detect Browser Request').option('-e, --externalProxy [value]', 'set external Proxy').option('-c, --cache [value]', 'set no cache').option('-w, --contentEditable [value]', 'set content editable');
 
     program.parse(process.argv);
 
-    var cusSpyProxyPort = program.port || 9888;
+    var cusSpyProxyPort = program.port || SYSTEM_PROT;
 
     var cusShowIframe = false;
     if (program.showIframe === 'true') {

@@ -4,6 +4,7 @@ const program = require('commander')
 const weinreDelegate = require('./weinre/weinreDelegate')
 const colors = require('colors')
 const http = require('http')
+const { SYSTEM_PROT } = require('../../config/index')
 
 function startProxyServer(callbackPort) {
     // program
@@ -17,7 +18,8 @@ function startProxyServer(callbackPort) {
 
     // program.parse(process.argv)
 
-    var cusSpyProxyPort = program.port || 9888
+    // var cusSpyProxyPort = program.port || 9888
+    var cusSpyProxyPort = SYSTEM_PROT
 
     var cusShowIframe = false
     // if (program.showIframe === 'true') {

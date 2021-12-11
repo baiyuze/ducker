@@ -15,6 +15,7 @@ var iconv = require('iconv-lite');
 var jschardet = require('jschardet');
 var domain = require('domain');
 var childProcess = require('child_process');
+const { SYSTEM_PROT } = require('../../../config/index')
 
 var d = domain.create();
 d.on('error', function (err) {
@@ -24,7 +25,7 @@ module.exports = {
     createProxy: function createProxy(_ref) {
         var injectScriptTag = _ref.injectScriptTag,
             _ref$port = _ref.port,
-            port = _ref$port === undefined ? 9888 : _ref$port,
+            port = _ref$port === undefined ? SYSTEM_PROT : _ref$port,
             weinrePort = _ref.weinrePort,
             _ref$autoDetectBrowse = _ref.autoDetectBrowser,
             autoDetectBrowser = _ref$autoDetectBrowse === undefined ? true : _ref$autoDetectBrowse,

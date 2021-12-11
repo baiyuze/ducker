@@ -21,7 +21,7 @@ d.on('error', function(err) {
 module.exports = {
     createProxy({
         injectScriptTag,
-        port = 9888,
+        port = config.SYSTEM_PROT,
         weinrePort,
         autoDetectBrowser = true,
         externalProxy,
