@@ -1,4 +1,4 @@
-const osProxy = require('cross-os-proxy')
+const osProxy = require('./cross-os-proxy/index')
 const { SYSTEM_PROT, SYSTEM_PROXY_START, SYSTEM_PROXY_CLOSE} = require('../../config')
 
 

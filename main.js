@@ -2,13 +2,30 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const SystemProxy = require('./app/bin/www')
-
+const { ipcMain } = require('electron')
+const setCrt = require('./app/system-proxy/set-crt')
+const { SYSTEM_TIP_CRT, SYSTEM_CLICK_BTN } = require('./config')
 
 class CreateProxyServerAndInitUI {
   // SystemProxy
   constructor() {
     this.mainWindow = null;
     this.initWinidow();
+  }
+
+  installCrt(mainWindow) {
+    ipcMain.on(SYSTEM_CLICK_BTN, async (event, arg) => {
+      let msg = ''
+      try {
+        // 设置证书
+        await setCrt()
+        msg = '证书安装完成';
+      } catch (error) {
+        msg = '证书安装失败，请手动安装证书';
+      }
+      mainWindow.webContents.send(SYSTEM_TIP_CRT, msg)
+    })
+
   }
   
   initWinidow() {
@@ -30,8 +47,9 @@ class CreateProxyServerAndInitUI {
       }
     })
     this.mainWindow = mainWindow;
+    this.installCrt(mainWindow)
     this.createSystemProxyConfig()
-    mainWindow.loadFile('./index.html')
+    mainWindow.loadFile('./wrap.html')
     process.env.NODE_ENV === 'dev' ? mainWindow.webContents.openDevTools() : null
   }
 

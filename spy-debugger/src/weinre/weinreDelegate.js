@@ -105,18 +105,18 @@ function startWeinreServer (port, callbackPort) {
                                     //     child_process.exec(`open http://127.0.0.1:${guiPort}`);
                                     //     console.log(colors.green(`浏览器打开 ---> http://127.0.0.1:${guiPort}`));
                                     // }
-                                    callbackPort && callbackPort(guiPort)
+                                    callbackPort && callbackPort(guiPort, port, webPort)
                                 }, 600)
                             });
                             guiServer.on('error', (e) => {
                                 console.log(e);
                             })
-                            var fp = path.join(__dirname, '../../template/wrap.html');
-                            var fileTemp = (fs.readFileSync(fp)).toString();
-                            var fileString = _.template(fileTemp)({
-                                weinreUrl: `http://127.0.0.1:${port}/client`,
-                                anyProxyUrl: `http://127.0.0.1:${webPort}`
-                            });
+                            // var fp = path.join(__dirname, '../../../wrap.html');
+                            // var fileTemp = (fs.readFileSync(fp)).toString();
+                            // var fileString = _.template(fileTemp)({
+                            //     weinreUrl: `http://127.0.0.1:${port}/client`,
+                            //     anyProxyUrl: `http://127.0.0.1:${webPort}`
+                            // });
                             guiServer.on('request', (req, res) => {
                                 res.setHeader('Content-Type', 'text/html;charset=utf-8');
                                 res.end(fileString);

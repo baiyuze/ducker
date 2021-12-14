@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "agentkeepalive": "^4.1.4",
+    "antd": "^4.17.3",
     "anyproxy": "4.1.0",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-polyfill": "^6.13.0",
@@ -59,6 +60,8 @@
     "nopt": "3.0.x",
     "os-proxy-config": "^1.1.1",
     "program": "^1.0.0",
+    "regedit": "^5.0.0",
+    "sudo-prompt": "^9.2.1",
     "through2": "^2.0.5",
     "tunnel-agent": "^0.6.0",
     "underscore": "^1.13.1",

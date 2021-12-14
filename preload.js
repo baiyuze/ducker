@@ -2,23 +2,19 @@ const startProxyService = require('./spy-debugger/src/index')
 // const eventEmit = require()
 
 // 创建系统代理
+startProxyService((port, debugPort, anyPort) => {
+       /* 创建一个事件对象，名字为newEvent，类型为build */
+      var newEvent = new CustomEvent('PORT_REDIY', { detail: {
+        debugPort,
+        anyPort
+      },bubbles:true,cancelable:true,composed:true });
+      
+      /* 给这个事件对象创建一个属性并赋值，这里绑定的事件要和我们创建的事件类型相同，不然无法触发 */
+      
 
-startProxyService((port) => {
-  // 创建iframe标签
-  const iframe = document.createElement('iframe');
-  iframe.src = `http://127.0.0.1:${port}`;
-  iframe.style.boder = 0;
-  iframe.width = '100%';
-  iframe.height = '100%';
-  const content = document.querySelector('#iframe-content');
-  iframe.setAttribute('frameborder', 0)
-  content.appendChild(iframe)
-  iframe.onload = () => {
-    const load = document.querySelector('.loadding')
-    console.log(load,'load')
-    load.style.display = 'none'
-  }
-
+         
+     /* 触发自定义事件 */
+     document.dispatchEvent(newEvent); 
 })
 
   window.addEventListener('DOMContentLoaded', () => {
