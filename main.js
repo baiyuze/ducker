@@ -37,6 +37,7 @@ class CreateProxyServerAndInitUI {
   }
 
   createWindow () {
+    const isDev = process.env.NODE_ENV === 'dev';
     const mainWindow = new BrowserWindow({
       width: 1400,
       height: 1000,
@@ -49,8 +50,12 @@ class CreateProxyServerAndInitUI {
     this.mainWindow = mainWindow;
     this.installCrt(mainWindow)
     this.createSystemProxyConfig()
-    mainWindow.loadFile('./wrap.html')
-    process.env.NODE_ENV === 'dev' ? mainWindow.webContents.openDevTools() : null
+    if(isDev) {
+      mainWindow.loadFile('./index-prod.html')
+      mainWindow.webContents.openDevTools()
+    } else {
+      mainWindow.loadFile('./index-prod.html')
+    }
   }
 
   readyServer() {
