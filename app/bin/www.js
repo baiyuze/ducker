@@ -45,9 +45,6 @@ class SystemProxy {
       }
       app.exit();
     })
-    app.on('window-all-closed', () => {
-      app.quit()
-    })
   }
 }
 

@@ -35,8 +35,8 @@ class CreateProxyServerAndInitUI {
     this.readyServer();
   }
 
-  async createSystemProxyConfig() {
-    new SystemProxy(this.mainWindow)
+  async createSystemProxyConfig(mainWindow) {
+    new SystemProxy(mainWindow)
   }
 
   async hideProcessWindow(mainWindowChild, mainWindow) {
@@ -64,18 +64,35 @@ class CreateProxyServerAndInitUI {
         nodeIntegration: true
       }
     });
+
     const html = isDev ? 'index.html' : 'index-prod.html';
+    this.onEventChange(mainWindow)
     mainWindow.loadFile(html);
     mainWindowChild.loadFile('./child.html');
     this.mainWindow = mainWindow;
+
     this.installCrt(mainWindow);
-    this.createSystemProxyConfig();
+    this.createSystemProxyConfig(mainWindow);
     this.hideProcessWindow(mainWindowChild, mainWindow);
+  }
+
+  onEventChange(mainWindow) {
+    // 不会更改标题
+    mainWindow.on('page-title-updated', (event) => {
+      event.preventDefault();
+    });
+    mainWindow.on('close', (event) => {
+      event.preventDefault();
+      app.quit();
+    });
   }
 
   readyServer() {
     app && app.whenReady().then(() => {
       if (BrowserWindow.getAllWindows().length === 0) this.createWindow()
+    })
+    app && app.on('window-all-closed', () => {
+      app.quit()
     })
   }
 }
