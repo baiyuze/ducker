@@ -64,7 +64,7 @@
     "sudo-prompt": "^9.2.1",
     "through2": "^2.0.5",
     "tunnel-agent": "^0.6.0",
-    "underscore": "^1.13.1",
+    "underscore": "^1.13.2",
     "urllib": "^2.38.0"
   },
   "config": {
