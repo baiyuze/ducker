@@ -206,7 +206,6 @@ function chunkReplace(chunk, injectScriptTag, proxyRes) {
             })
             proxyRes.on('end',(val) => {
                 const allChunks = Buffer.concat(chunks)
-                console.log(allChunks.toString())
             })
         } catch (e) {
             console.error(e);
@@ -215,7 +214,6 @@ function chunkReplace(chunk, injectScriptTag, proxyRes) {
     } else {
         chunkString = chunk.toString();
     }
-    console.log(chunkString,'chunkString====')
     var newChunkString = htmlUtil.injectScriptIntoHtml(chunkString, injectScriptTag);
 
     var buffer;
@@ -227,7 +225,7 @@ function chunkReplace(chunk, injectScriptTag, proxyRes) {
             buffer = iconv.encode(newChunkString, 'utf-8');
         }
     } else {
-        buffer = new Buffer(newChunkString);
+        buffer = new Buffer.from(newChunkString);
     }
 
     return buffer;

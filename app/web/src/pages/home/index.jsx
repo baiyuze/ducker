@@ -16,7 +16,6 @@ export default class Home extends Component {
   }
   componentDidMount() {
     this.listenPort()
-
   }
 
   async listenPort() {

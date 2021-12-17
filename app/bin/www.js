@@ -36,20 +36,17 @@ class SystemProxy {
           console.log(`stdout: ${stdout}`);
       });
     })
-
-    app.on('window-all-closed',() => {
-      const closePath = path.join(__dirname, '../system-proxy/close.js')
-      exec(`node ${closePath}`, (error, stdout, stderr) => {
-          if (error) {
-              console.log(`error: ${error.message}`);
-              return;
-          }
-          if (stderr) {
-              console.log(`stderr: ${stderr}`);
-              return;
-          }
-          console.log(`stdout: ${stdout}`);
-      });
+    app.on('before-quit',async (event) => {
+      event.preventDefault();
+      try {
+        await closeSystemProxy();
+      } catch (error) {
+        console.log(error)
+      }
+      app.exit();
+    })
+    app.on('window-all-closed', () => {
+      app.quit()
     })
   }
 }

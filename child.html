@@ -15,7 +15,7 @@
     // startProxyService
     startProxyService((port, debugPort, anyPort) => {
       ipcRenderer.send(CHILD_MSG_TO_MAIN, {
-        debugPort, anyPort
+        debugPort, anyPort, pid: 59821
       })
     })
   </script>

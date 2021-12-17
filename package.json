@@ -5,13 +5,10 @@
   "main": "main.js",
   "scripts": {
     "bash": "chmod 777 install.sh && bash install.sh",
-    "dev": "cd ./app/web && npm start",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "build:exe": "electron-forge package --platform=win32 --arch=x64",
+    "start": "cp ./config/env.local ./config/env.json && electron-forge start & cd ./app/web && npm start",
     "make": "electron-forge make",
-    "build": "mv ./app/web ../ &&  electron-builder -mw && mv  ../web  ./app/",
-    "package:exe": "electron-packager ./ VEA_L --platform=win32 --arch=x64 --electron-version=2.0.0 --overwrite"
+    "build": "cp ./config/env.prod ./config/env.json && node build.js",
+    "build:all": "electron-builder -mw"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -29,11 +26,12 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.61",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
     "@electron-forge/maker-zip": "^6.0.0-beta.61",
-    "electron": "^15.3.0",
-    "electron-builder": "^22.14.5",
     "babel-cli": "^6.6.5",
     "babel-preset-es2015": "^6.6.0",
-    "mocha": "^6.1.4"
+    "electron": "^15.3.0",
+    "electron-builder": "^22.14.5",
+    "mocha": "^6.1.4",
+    "shelljs": "^0.8.4"
   },
   "dependencies": {
     "agentkeepalive": "^4.1.4",

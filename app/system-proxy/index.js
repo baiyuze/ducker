@@ -10,8 +10,16 @@ async function openSystemProxy(mainWindow, port = SYSTEM_PROT) {
 }
 
 async function closeSystemProxy() {
-  await osProxy.closeProxy() // close http and https proxy
-  console.log('系统代理已关闭')
+  return new Promise(async (resolve,reject) => {
+    try {
+      await osProxy.closeProxy() // close http and https proxy
+      resolve()
+      
+    } catch (error) {
+      reject(error)
+    }
+  })
+
 }
 
 module.exports = {
