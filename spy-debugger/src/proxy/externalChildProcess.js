@@ -1,4 +1,4 @@
-require('babel-polyfill')
+// require('babel-polyfill')
 const http = require('http')
 const AnyProxy = require('anyproxy')
 const fs = require('fs')

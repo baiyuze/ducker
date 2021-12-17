@@ -2,7 +2,7 @@
 import { Component, Fragment } from 'react';
 import { Tabs, Button, Spin, message } from 'antd';
 const { TabPane } = Tabs;
-const { ipcRenderer, config } = window.electron
+const { ipcRenderer, config, RenderListener } = window.electron
 import './index.less';
 export default class Home extends Component {
   constructor() {
@@ -19,14 +19,17 @@ export default class Home extends Component {
 
   }
 
-  listenPort() {
+  async listenPort() {
     this.setState({ contentLoading: true })
-    document.addEventListener("PORT_REDIY", (event) => {
-      const { anyPort, debugPort } = event.detail;
-      const debuggerSrc = `http://127.0.0.1:${debugPort}/client`;
-      const fidderSrc = `http://127.0.0.1:${anyPort}`;
-      this.setState({ debuggerSrc, fidderSrc})
-    }, false)
+    try {
+      const { anyPort, debugPort } = await RenderListener('PORT_REDIY')
+        const debuggerSrc = `http://127.0.0.1:${debugPort}/client`;
+        const fidderSrc = `http://127.0.0.1:${anyPort}`;
+        this.setState({ debuggerSrc, fidderSrc})
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
   onClickInstallCrt() {
@@ -53,7 +56,7 @@ export default class Home extends Component {
         <div className="container-home">
           <Spin tip="Loading..." spinning={contentLoading}>
             <Tabs onChange={this.callback.bind(this)} type="card">
-              <TabPane tab="页面调试" key="1">
+              <TabPane forceRender={true} tab="页面调试" key="1">
                 <iframe onLoad={this.onLoadIframe.bind(this)} src={debuggerSrc} frameBorder="0" height="100%" width="100%" ></iframe>
               </TabPane>
               <TabPane tab="请求抓包" key="2">

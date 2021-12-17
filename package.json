@@ -5,12 +5,12 @@
   "main": "main.js",
   "scripts": {
     "bash": "chmod 777 install.sh && bash install.sh",
-    "dev": "cd web && npm start & electron-forge start",
+    "dev": "cd ./app/web && npm start",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "build:exe": "electron-forge package --platform=win32 --arch=x64",
     "make": "electron-forge make",
-    "build": "electron-builder -mw",
+    "build": "mv ./app/web ../ &&  electron-builder -mw && mv  ../web  ./app/",
     "package:exe": "electron-packager ./ VEA_L --platform=win32 --arch=x64 --electron-version=2.0.0 --overwrite"
   },
   "repository": "https://github.com/electron/electron-quick-start",

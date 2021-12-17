@@ -10,7 +10,7 @@ const { PROXY_WORKER } = require('../../config')
 const path = require('path')
 
 class SystemProxy {
-  constructor(mainWindow) {
+  constructor(mainWindow, startService) {
     this.workMap = {
       [PROXY_WORKER]: null
     }
@@ -33,6 +33,21 @@ class SystemProxy {
               return;
           }
           // 系统代理已关闭==
+          console.log(`stdout: ${stdout}`);
+      });
+    })
+
+    app.on('window-all-closed',() => {
+      const closePath = path.join(__dirname, '../system-proxy/close.js')
+      exec(`node ${closePath}`, (error, stdout, stderr) => {
+          if (error) {
+              console.log(`error: ${error.message}`);
+              return;
+          }
+          if (stderr) {
+              console.log(`stderr: ${stderr}`);
+              return;
+          }
           console.log(`stdout: ${stdout}`);
       });
     })

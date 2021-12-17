@@ -15,7 +15,7 @@ fi
 
 echo "正在安装前端模块，请稍后..."
 
-cd web
+cd ./app/web
 
 npm install 
 

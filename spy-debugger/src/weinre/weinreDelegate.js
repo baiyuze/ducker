@@ -69,8 +69,8 @@ function startWeinreServer (port, callbackPort) {
             boundHost: '-all-',
             verbose: false,
             debug: false,
-            readTimeout: 5,
-            deathTimeout: 15
+            readTimeout: 600,
+            deathTimeout: 600
         });
         weinreServer.on('listening', () => {
 

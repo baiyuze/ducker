@@ -4,7 +4,8 @@ const path = require('path')
 const SystemProxy = require('./app/bin/www')
 const { ipcMain } = require('electron')
 const setCrt = require('./app/system-proxy/set-crt')
-const { SYSTEM_TIP_CRT, SYSTEM_CLICK_BTN } = require('./config')
+const { MainSendMsgToRender, MainMsgListener } = require('./app/utils/index')
+const { SYSTEM_TIP_CRT, SYSTEM_CLICK_BTN, CHILD_MSG_TO_MAIN } = require('./config')
 
 class CreateProxyServerAndInitUI {
   // SystemProxy
@@ -29,6 +30,7 @@ class CreateProxyServerAndInitUI {
   }
   
   initWinidow() {
+
     this.readyServer();
   }
 
@@ -36,8 +38,23 @@ class CreateProxyServerAndInitUI {
     new SystemProxy(this.mainWindow)
   }
 
+  async hideProcessWindow(mainWindowChild, mainWindow) {
+    const portContent = await MainMsgListener(mainWindowChild, CHILD_MSG_TO_MAIN)
+    MainSendMsgToRender(mainWindow, 'PORT_REDIY', portContent)
+  }
+
   createWindow () {
     const isDev = process.env.NODE_ENV === 'dev';
+    const mainWindowChild = new BrowserWindow({
+      width: 100,
+      height: 100,
+      show: false,
+      webPreferences: {
+        contextIsolation:false,
+        nodeIntegration: true
+      }
+    });
+
     const mainWindow = new BrowserWindow({
       width: 1400,
       height: 1000,
@@ -48,13 +65,16 @@ class CreateProxyServerAndInitUI {
       }
     })
     this.mainWindow = mainWindow;
-    this.installCrt(mainWindow)
-    this.createSystemProxyConfig()
+    this.installCrt(mainWindow);
+    this.createSystemProxyConfig();
+    mainWindowChild.loadFile('./child.html')
+    this.hideProcessWindow(mainWindowChild, mainWindow)
+
     if(isDev) {
-      mainWindow.loadFile('./index-prod.html')
+      mainWindow.loadFile('./index.html')
       mainWindow.webContents.openDevTools()
     } else {
-      mainWindow.loadFile('./index-prod.html')
+      mainWindow.loadFile('./index.html')
     }
   }
 
