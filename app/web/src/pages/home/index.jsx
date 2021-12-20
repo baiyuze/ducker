@@ -1,6 +1,7 @@
 // import { Fragment } from '@umijs/renderer-react/node_modules/@types/react';
 import { Component, Fragment } from 'react';
 import { Tabs, Button, Spin, message } from 'antd';
+import Setting from './components/setting'
 const { TabPane } = Tabs;
 const { ipcRenderer, config, RenderListener } = window.electron
 import './index.less';
@@ -15,13 +16,28 @@ export default class Home extends Component {
     }
   }
   componentDidMount() {
-    this.listenPort()
+    const port = sessionStorage.getItem('port');
+    if (port) {
+      this.initPort(port)
+    } else {
+      this.listenPort()
+    }
+
+  }
+
+  initPort(port) {
+    const parsePort = JSON.parse(port);
+    this.setState({ contentLoading: true })
+    const debuggerSrc = `http://127.0.0.1:${parsePort.debugPort}/client`;
+    const fidderSrc = `http://127.0.0.1:${parsePort.anyPort}`;
+    this.setState({ debuggerSrc, fidderSrc })
   }
 
   async listenPort() {
     this.setState({ contentLoading: true })
     try {
       const { anyPort, debugPort } = await RenderListener('PORT_REDIY')
+        sessionStorage.setItem('port', JSON.stringify({ anyPort, debugPort }))
         const debuggerSrc = `http://127.0.0.1:${debugPort}/client`;
         const fidderSrc = `http://127.0.0.1:${anyPort}`;
         this.setState({ debuggerSrc, fidderSrc})
@@ -29,15 +45,6 @@ export default class Home extends Component {
       console.log(error)
     }
 
-  }
-
-  onClickInstallCrt() {
-    this.setState({ loading: true });
-    ipcRenderer.send(config.SYSTEM_CLICK_BTN, 'ping')
-    document.addEventListener(config.CRT_INSTALL_SUCCESS, (event) => {
-      message.success("证书安装成功");
-      this.setState({ loading: false })
-    }, false)
   }
 
   callback(key) {
@@ -62,7 +69,7 @@ export default class Home extends Component {
                 <iframe src={fidderSrc} frameBorder="0" height="100%" width="100%" ></iframe>
               </TabPane>
               <TabPane tab="设置" key="3">
-                <Button loading={loading} onClick={this.onClickInstallCrt.bind(this)}>点击安装https证书</Button>
+                <Setting />
               </TabPane>
             </Tabs>
           </Spin>
