@@ -34,7 +34,7 @@
     "shelljs": "^0.8.4"
   },
   "dependencies": {
-    "agentkeepalive": "^4.1.4",
+    "agentkeepalive": "^4.2.0",
     "antd": "^4.17.3",
     "anyproxy": "4.1.0",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
