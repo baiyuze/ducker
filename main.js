@@ -4,9 +4,14 @@ const path = require('path')
 const SystemProxy = require('./app/bin/www')
 const { ipcMain } = require('electron')
 const setCrt = require('./app/system-proxy/set-crt')
+const installCrt = require('./app/system-proxy/set-crt/install')
 const { MainSendMsgToRender, MainMsgListener } = require('./app/utils/index')
 const env = require('./config/env.json');
-const { SYSTEM_TIP_CRT, SYSTEM_CLICK_BTN, CHILD_MSG_TO_MAIN } = require('./config')
+const { SYSTEM_TIP_CRT, 
+  SYSTEM_CLICK_BTN, 
+  CHILD_MSG_TO_MAIN, 
+  SYSTEM_CLICK_NET_BTN_SUCCESS,
+  SYSTEM_CLICK_NET_BTN } = require('./config')
 
 const isDev = env.NODE_ENV === 'development';
 class CreateProxyServerAndInitUI {
@@ -29,6 +34,21 @@ class CreateProxyServerAndInitUI {
       }
       mainWindow.webContents.send(SYSTEM_TIP_CRT, msg)
     })
+
+    ipcMain.on(SYSTEM_CLICK_NET_BTN, async (event, arg) => {
+      let msg = '测试1下';
+      await installCrt();
+      // try {
+      //   // 设置证书
+      //   await setCrt()
+      //   msg = '证书安装完成';
+      // } catch (error) {
+      //   msg = '证书安装失败，请手动安装证书';
+      // }
+      mainWindow.webContents.send(SYSTEM_CLICK_NET_BTN_SUCCESS, msg)
+    })
+
+    
   }
   
   initWinidow() {
@@ -49,7 +69,7 @@ class CreateProxyServerAndInitUI {
     const mainWindowChild = new BrowserWindow({
       width: 800,
       height: 800,
-      show: false,
+      show: true,
       webPreferences: {
         contextIsolation:false,
         nodeIntegration: true
