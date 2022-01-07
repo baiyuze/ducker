@@ -53,7 +53,7 @@
     "lodash": "^4.17.14",
     "mini-proxy": "^1.0.4",
     "mkdirp": "^1.0.4",
-    "node-forge": "^0.10.0",
+    "node-forge": "^1.1.0",
     "node-mitmproxy": "3.1.1",
     "nopt": "3.0.x",
     "os-proxy-config": "^1.1.1",
