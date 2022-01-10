@@ -40,7 +40,7 @@
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-polyfill": "^6.13.0",
     "charset": "^1.0.1",
-    "colors": "^1.1.2",
+    "colors": "^1.4.2",
     "commander": "^2.9.0",
     "cross-os-proxy": "^2.0.0",
     "debug": "^2.2.0",
