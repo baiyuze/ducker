@@ -43,7 +43,7 @@ class SystemProxy {
       try {
         await closeSystemProxy();
       } catch (error) {
-        console.log(error,'error')
+        console.log(error,'ERROR')
       }
       app.exit();
     })
