@@ -11,7 +11,7 @@ const fs = require('fs');
 const htmlUtil = require('../util/htmlUtil');
 const path = require('path');
 const domain = require('domain');
-const mitmproxy = require('node-mitmproxy');
+const mitmproxy = require('../node-mitmproxy');
 const _ = require('lodash');
 const ip = require('ip');
 
@@ -82,7 +82,10 @@ function startWeinreServer (port, callbackPort) {
                     tpl,
                     showIframe,
                     contentEditable,
-                    weinreDomain: config.SPY_WEINRE_DOMAIN
+                    // weinreDomain: `http://127.0.0.1:${port}`
+                    // weinreScriptStr: str.toString('utf8')
+                    // weinreDomain: `${ip.address()}:${port}`
+                    weinreDomain: `${config.SPY_WEINRE_DOMAIN}`
                 });
                 spyProxy.createProxy({
                     port: spyProxyPort,
@@ -98,13 +101,6 @@ function startWeinreServer (port, callbackPort) {
                             guiServer.listen(() => {
                                 setTimeout(() => {
                                     var guiPort = guiServer.address().port;
-                                    // if (process.platform === 'win32' || process.platform === 'win64') {
-                                    //     child_process.exec(`start http://127.0.0.1:${guiPort}`);
-                                    //     console.log(colors.green(`浏览器打开 ---> http://127.0.0.1:${guiPort}`));
-                                    // } else {
-                                    //     child_process.exec(`open http://127.0.0.1:${guiPort}`);
-                                    //     console.log(colors.green(`浏览器打开 ---> http://127.0.0.1:${guiPort}`));
-                                    // }
                                     callbackPort && callbackPort(guiPort, port, webPort)
                                 }, 600)
                             });

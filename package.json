@@ -5,10 +5,11 @@
   "main": "main.js",
   "scripts": {
     "bash": "chmod 777 install.sh && bash install.sh",
+    "dev": "electron-forge start",
     "start": "cp ./config/env.local ./config/env.json && electron-forge start & cd ./app/web && npm start",
     "make": "electron-forge make",
     "build": "cp ./config/env.prod ./config/env.json && node build.js",
-    "build:all": "electron-builder -mw"
+    "build:all": "electron-builder -m"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [

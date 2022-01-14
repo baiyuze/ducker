@@ -16,8 +16,18 @@ async function setProxy(host, port) {
  * close system proxy, includes http & https
  * @returns Promise
  */
-async function closeProxy() {
-  return currentOsProxy.closeProxy()
+function closeProxy() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await currentOsProxy.closeProxy();
+      resolve();
+    } catch (error) {
+      console.log(error,'error')
+      reject(error);
+    }
+  })
+
+  
 }
 
 module.exports = {

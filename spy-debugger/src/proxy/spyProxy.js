@@ -1,5 +1,5 @@
 const url = require('url');
-const mitmProxy = require('node-mitmproxy');
+const mitmProxy = require('../node-mitmproxy');
 const httpUtil = require('../util/httpUtil');
 const zlib = require('zlib');
 const through = require('through2');
@@ -13,11 +13,12 @@ const iconv = require('iconv-lite');
 const jschardet = require('jschardet');
 const domain = require('domain');
 const childProcess = require('child_process');
-
+const { Transform } = require('stream');
 var d = domain.create();
 d.on('error', function(err) {
     console.log(err.message);
 });
+
 module.exports = {
     createProxy({
         injectScriptTag,
@@ -28,6 +29,7 @@ module.exports = {
         successCB,
         cache
     }) {
+        const buff = Buffer.from(injectScriptTag);
         var createMitmProxy = () => {
             mitmProxy.createProxy({
                 externalProxy: (req, ssl) => {
@@ -96,6 +98,7 @@ module.exports = {
                         rOptions.agent = false;
                     }
                     // delete Accept-Encoding
+                    // 如果获取string的话，不删除会造成乱码问题
                     delete rOptions.headers['accept-encoding'];
 
                     // no cache
@@ -115,36 +118,33 @@ module.exports = {
                     if (!isHtml || contentLengthIsZero) {
                         next();
                     } else {
-                        Object.keys(proxyRes.headers).forEach(function(key) {
-                            if (proxyRes.headers[key] != undefined) {
-                                var newkey = key.replace(/^[a-z]|-[a-z]/g, match => {
-                                    return match.toUpperCase();
-                                });
-                                var newkey = key;
+                        // Object.keys(proxyRes.headers).forEach(function(key) {
+                        //     if (proxyRes.headers[key] != undefined) {
+                        //         var newkey = key.replace(/^[a-z]|-[a-z]/g, match => {
+                        //             return match.toUpperCase();
+                        //         });
+                        //         var newkey = key;
 
-                                if (
-                                    isHtml &&
-                                    (key === 'content-length' || key === 'content-security-policy')
-                                ) {
-                                    // do nothing
-                                } else {
-                                    res.setHeader(newkey, proxyRes.headers[key]);
-                                }
-                            }
-                        });
+                        //         if (
+                        //             isHtml &&
+                        //             (key === 'content-length' || key === 'content-security-policy')
+                        //         ) {
+                        //             // do nothing
+                        //         } else {
+                        //             res.setHeader(newkey, proxyRes.headers[key]);
+                        //         }
+                        //     }
+                        // });
 
                         res.writeHead(proxyRes.statusCode);
 
-                        var isGzip = httpUtil.isGzip(proxyRes);
+                        // var isGzip = httpUtil.isGzip(proxyRes);
 
                         var chunks = []
-                        proxyRes.on('data', function (chunk) {
-                            chunks.push(chunk)
-                        }).on('end', function () {
-                            var allChunk = Buffer.concat(chunks);
-
-                            res.end(chunkReplace(allChunk, injectScriptTag, proxyRes))
-                        })
+                        // res.end(chunkReplace(chunks, injectScriptTag, proxyRes)
+                        // proxyRes.pipe(res)
+                        res.write(injectScriptTag);
+                        proxyRes.pipe(res)
                     }
                     next();
                 }
@@ -170,17 +170,17 @@ module.exports = {
                 let restartFun = () => {
                     console.log(colors.yellow(`anyproxy异常退出，尝试重启`));
                     let childProxy = childProcess.fork(`${__dirname}/externalChildProcess`);
-                    childProxy.send({
-                        type: 'restart',
-                        ports
-                    });
-                    childProxy.on('exit', function(e) {
-                        restartFun();
-                    });
+                    // childProxy.send({
+                    //     type: 'restart',
+                    //     ports
+                    // });
+                    // childProxy.on('exit', function(e) {
+                    //     restartFun();
+                    // });
                 };
-                childProxy.on('exit', function(e) {
-                    restartFun();
-                });
+                // childProxy.on('exit', function(e) {
+                //     restartFun();
+                // });
             });
         } else {
             createMitmProxy();
@@ -188,45 +188,44 @@ module.exports = {
         }
     }
 };
-function chunkReplace(chunk, injectScriptTag, proxyRes) {
-    var _charset;
-    try {
-        _charset =  charset(proxyRes, chunk) || jschardet.detect(chunk).encoding.toLowerCase();
-    } catch (e) {
-        console.error(e);
-    }
-    
-    var chunkString;
-    if (_charset != null && _charset != 'utf-8') {
-        try {
-            chunkString = iconv.decode(chunk, _charset);
-            const chunks = [];
-            proxyRes.on('data',(val) => {
-                chunks.push(val);
-            })
-            proxyRes.on('end',(val) => {
-                const allChunks = Buffer.concat(chunks)
-            })
-        } catch (e) {
-            console.error(e);
-            chunkString = iconv.decode(chunk, 'utf-8');
-        }
-    } else {
-        chunkString = chunk.toString();
-    }
-    var newChunkString = htmlUtil.injectScriptIntoHtml(chunkString, injectScriptTag);
 
-    var buffer;
-    if (_charset != null && _charset != 'utf-8') {
-        try {
-            buffer = iconv.encode(newChunkString, _charset);
-        } catch (e) {
-            console.error(e);
-            buffer = iconv.encode(newChunkString, 'utf-8');
-        }
-    } else {
-        buffer = new Buffer.from(newChunkString);
-    }
+function chunkReplace(chunk, injectScriptTag, proxyRes) {
+    var _charset = 'utf-8';
+    // try {
+    //     _charset =  charset(proxyRes, chunk) || jschardet.detect(chunk).encoding.toLowerCase();
+    // } catch (e) {
+    //     console.error(e);
+    // }
+    
+    // var chunkString;
+    // if (_charset != null && _charset != 'utf-8') {
+    //     try {
+    //         chunkString = iconv.decode(chunk, _charset);
+    //     } catch (e) {
+    //         console.error(e);
+    //         chunkString = iconv.decode(chunk, 'utf-8');
+    //     }
+    // } else {
+    //     chunkString = chunk.toString();
+    // }
+    console.log(injectScriptTag,'===injectScriptTag')
+    // var newChunkString = htmlUtil.injectScriptIntoHtml('', injectScriptTag);
+
+    // var buffer;
+    // if (_charset != null && _charset != 'utf-8') {
+    //     try {
+    //         buffer = iconv.encode(newChunkString, _charset);
+    //     } catch (e) {
+    //         console.error(e);
+    //         buffer = iconv.encode(newChunkString, 'utf-8');
+    //     }
+    // } else {
+    //     buffer = new Buffer.from(newChunkString);
+    // }
 
     return buffer;
 }
+
+
+
+

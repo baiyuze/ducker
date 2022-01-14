@@ -27,6 +27,7 @@ function RenderListener(KEY) {
   return new Promise((resolve) => {
     if(window && window.electron) {
       const { ipcRenderer } = window.electron
+      console.log(KEY,'====','ipcRenderer===')
       ipcRenderer.on(KEY, (event, message) => {
         resolve(message)
       })

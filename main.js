@@ -85,7 +85,7 @@ class CreateProxyServerAndInitUI {
       }
     });
 
-    const html = isDev ? 'index.html' : 'index-prod.html';
+    const html = isDev ? 'index-prod.html' : 'index-prod.html';
     this.onEventChange(mainWindow)
     mainWindow.loadFile(html);
     mainWindowChild.loadFile('./child.html');

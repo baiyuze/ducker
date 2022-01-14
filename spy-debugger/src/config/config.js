@@ -1,7 +1,8 @@
 const { SYSTEM_PROT } = require('../../../config')
 
 
-const SPY_WEINRE_DOMAIN = 'spyweinrefortest.com';
+// const SPY_WEINRE_DOMAIN = 'spyweinrefortest.com';
+const SPY_WEINRE_DOMAIN = 'it.domain.name';
 const SPY_DEBUGGER_DOMAIN = 'spydebugger.com';
 
 var config = exports;

@@ -1,3 +1,4 @@
+
 <script>
 // spy-debugger inject --- begin
 (function () {
@@ -30,7 +31,6 @@
             }
 
             document.write('<script src="//<%= weinreDomain %>/target/target-script-min.js#anonymous"><\/script>');
-
             var hasExec = false;
             var executeConsole = function () {
                 if (hasExec) {
@@ -68,6 +68,7 @@
                     window.addEventListener("load", completed);
                 }
             }
+            
         } else {
             //do noting
         }
@@ -80,6 +81,5 @@
         console.error(e);
     }
 })()
-
 // spy-debugger inject --- end
 </script>

@@ -1,4 +1,6 @@
 const { execFile } = require("child_process")
+const setSystemProxy = require("./proxyon")
+const offNetSystemProxy = require("./proxyoff")
 const path = require("path")
 
 /**
@@ -8,16 +10,13 @@ const path = require("path")
  * @returns Promise<string>
  */
 function setProxy(host, port) {
-  const proxyOnShellPath = path.resolve(__dirname, "./proxyon.sh")
-  return new Promise((resolve, reject) => {
-    execFile(proxyOnShellPath, [host, port], (error, stdout, stderr) => {
-      if (error) {
-        reject(error)
-        throw error
-      } else {
-        resolve(stdout)
-      }
-    })
+  return new Promise(async (resolve, reject) => {
+    try {
+      await setSystemProxy(host, port)
+      resolve()
+    } catch (error) {
+      reject()
+    }
   })
 }
 
@@ -26,17 +25,15 @@ function setProxy(host, port) {
  * @returns Promise<string>
  */
 function closeProxy() {
-  const proxyOffShellPath = path.resolve(__dirname, "./proxyoff.sh")
-  return new Promise((resolve, reject) => {
-    execFile(proxyOffShellPath, [], (error, stdout, stderr) => {
-      if (error) {
-        reject(error)
-        throw error
-      } else {
-        resolve(stdout)
-      }
-    })
+  return new Promise(async (resolve, reject) => {
+    try {
+      await offNetSystemProxy()
+      resolve()
+    } catch (error) {
+      reject(error)
+    }
   })
+  
 }
 
 module.exports = {

@@ -31,7 +31,7 @@ function startProxyServer(callbackPort) {
     //     autoDetectBrowser = true
     // }
 
-    var cusCache = false
+    var cusCache = true
     // if (program.cache === 'true') {
     //     cusCache = true
     // }

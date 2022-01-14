@@ -15,6 +15,7 @@ class SystemProxy {
       [PROXY_WORKER]: null
     }
     this.mainWindow = mainWindow;
+
     this.createWorkProcess()
   }
 
@@ -35,13 +36,14 @@ class SystemProxy {
           // 系统代理已关闭==
           console.log(`stdout: ${stdout}`);
       });
+      app.exit();
     })
     app.on('before-quit',async (event) => {
       event.preventDefault();
       try {
         await closeSystemProxy();
       } catch (error) {
-        console.log(error)
+        console.log(error,'error')
       }
       app.exit();
     })

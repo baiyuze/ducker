@@ -74,11 +74,11 @@ process.on('message', ({ type, ports }) => {
             })
         })()
     } else if (type === 'restart') {
-        port = ports.port
-        webPort = ports.webPort
-        socketPort = ports.socketPort
+        // port = ports.port
+        // webPort = ports.webPort
+        // socketPort = ports.socketPort
 
-        createAnyProxy()
-        console.log(colors.green('重启成功！请手动刷新浏览器'))
+        // createAnyProxy()
+        // console.log(colors.green('重启成功！请手动刷新浏览器'))
     }
 })
