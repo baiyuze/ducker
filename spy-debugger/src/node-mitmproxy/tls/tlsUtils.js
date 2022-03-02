@@ -158,6 +158,7 @@ utils.createFakeCertificateByDomain = async function (caKey, caCert, domain) {
 }
 
 utils.createFakeCertificateByCA = async function (caKey, caCert, originCertificate) {
+    var a = Date.now();
     var certificate = utils.covertNodeCertToForgeCert(originCertificate);
     var keys = await generateKeyPair(pki);
 
@@ -214,6 +215,7 @@ utils.createFakeCertificateByCA = async function (caKey, caCert, originCertifica
         name:'authorityKeyIdentifier'
     }]);
     cert.sign(caKey, forge.md.sha256.create());
+    console.log('ByCA:' + ((Date.now() - a) / 1000) + '秒');
 
     return {
         key: keys.privateKey,

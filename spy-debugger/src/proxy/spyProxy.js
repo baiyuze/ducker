@@ -15,6 +15,8 @@ const domain = require('domain');
 const childProcess = require('child_process');
 const { Transform } = require('stream');
 var d = domain.create();
+const ip = require('ip');
+
 d.on('error', function(err) {
     console.log(err.message);
 });
@@ -65,6 +67,16 @@ module.exports = {
                         rPath = url.parse(rOptions.path).path;
                     } else {
                         rOptions.path = '/';
+                    }
+                    if(rPath.includes('localipnode')) {
+                        res.setHeader("Access-Control-Allow-Origin", "*");  
+                        res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");  
+                        res.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");  
+                        res.setHeader("X-Powered-By",' 3.2.1')  
+                        res.setHeader("Content-Type", "application/json;charset=utf-8"); 
+                        res.end(`{"ip":"${ip.address()}"}`);
+                        next();
+                        return;
                     }
 
                     if (
@@ -118,33 +130,38 @@ module.exports = {
                     if (!isHtml || contentLengthIsZero) {
                         next();
                     } else {
-                        // Object.keys(proxyRes.headers).forEach(function(key) {
-                        //     if (proxyRes.headers[key] != undefined) {
-                        //         var newkey = key.replace(/^[a-z]|-[a-z]/g, match => {
-                        //             return match.toUpperCase();
-                        //         });
-                        //         var newkey = key;
+                        Object.keys(proxyRes.headers).forEach(function(key) {
+                            if (proxyRes.headers[key] != undefined) {
+                                var newkey = key.replace(/^[a-z]|-[a-z]/g, match => {
+                                    return match.toUpperCase();
+                                });
+                                var newkey = key;
 
-                        //         if (
-                        //             isHtml &&
-                        //             (key === 'content-length' || key === 'content-security-policy')
-                        //         ) {
-                        //             // do nothing
-                        //         } else {
-                        //             res.setHeader(newkey, proxyRes.headers[key]);
-                        //         }
-                        //     }
-                        // });
+                                if (
+                                    isHtml &&
+                                    (key === 'content-length' || key === 'content-security-policy')
+                                ) {
+                                    // do nothing
+                                } else {
+                                    res.setHeader(newkey, proxyRes.headers[key]);
+                                }
+                            }
+                        });
 
                         res.writeHead(proxyRes.statusCode);
 
                         // var isGzip = httpUtil.isGzip(proxyRes);
 
                         var chunks = []
-                        // res.end(chunkReplace(chunks, injectScriptTag, proxyRes)
+                        proxyRes.on('data', function (chunk) {
+                            chunks.push(chunk)
+                        }).on('end', function () {
+                            var allChunk = Buffer.concat(chunks);
+
+                            res.end(chunkReplace(allChunk, injectScriptTag, proxyRes))
+                        })
+                        // res.write(injectScriptTag);
                         // proxyRes.pipe(res)
-                        res.write(injectScriptTag);
-                        proxyRes.pipe(res)
                     }
                     next();
                 }
@@ -190,42 +207,40 @@ module.exports = {
 };
 
 function chunkReplace(chunk, injectScriptTag, proxyRes) {
-    var _charset = 'utf-8';
-    // try {
-    //     _charset =  charset(proxyRes, chunk) || jschardet.detect(chunk).encoding.toLowerCase();
-    // } catch (e) {
-    //     console.error(e);
-    // }
-    
-    // var chunkString;
-    // if (_charset != null && _charset != 'utf-8') {
-    //     try {
-    //         chunkString = iconv.decode(chunk, _charset);
-    //     } catch (e) {
-    //         console.error(e);
-    //         chunkString = iconv.decode(chunk, 'utf-8');
-    //     }
-    // } else {
-    //     chunkString = chunk.toString();
-    // }
-    console.log(injectScriptTag,'===injectScriptTag')
-    // var newChunkString = htmlUtil.injectScriptIntoHtml('', injectScriptTag);
+    var _charset;
+    try {
+        _charset =  charset(proxyRes, chunk) || jschardet.detect(chunk).encoding.toLowerCase();
+    } catch (e) {
+        console.error(e);
+    }
+    var chunkString;
+    if (_charset != null && _charset != 'utf-8') {
+        try {
+            chunkString = iconv.decode(chunk, _charset);
+        } catch (e) {
+            console.error(e);
+            chunkString = iconv.decode(chunk, 'utf-8');
+        }
+    } else {
+        chunkString = chunk.toString();
+    }
 
-    // var buffer;
-    // if (_charset != null && _charset != 'utf-8') {
-    //     try {
-    //         buffer = iconv.encode(newChunkString, _charset);
-    //     } catch (e) {
-    //         console.error(e);
-    //         buffer = iconv.encode(newChunkString, 'utf-8');
-    //     }
-    // } else {
-    //     buffer = new Buffer.from(newChunkString);
-    // }
+    var newChunkString = htmlUtil.injectScriptIntoHtml(chunkString, injectScriptTag);
+
+    var buffer;
+    if (_charset != null && _charset != 'utf-8') {
+        try {
+            buffer = iconv.encode(newChunkString, _charset);
+        } catch (e) {
+            console.error(e);
+            buffer = iconv.encode(newChunkString, 'utf-8');
+        }
+    } else {
+        buffer = new Buffer(newChunkString);
+    }
 
     return buffer;
 }
-
 
 
 

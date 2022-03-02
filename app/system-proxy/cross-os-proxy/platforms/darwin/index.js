@@ -15,7 +15,7 @@ function setProxy(host, port) {
       await setSystemProxy(host, port)
       resolve()
     } catch (error) {
-      reject()
+      reject(error)
     }
   })
 }

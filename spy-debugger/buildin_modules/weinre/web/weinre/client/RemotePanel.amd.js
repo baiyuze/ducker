@@ -45,7 +45,22 @@ module.exports = RemotePanel = (function(_super) {
     this.initialize();
   }
 
-  RemotePanel.prototype.initialize = function() {
+  
+  async function getLocalIp() {
+    return new Promise((resolve) => {
+      fetch('https://ca.c/localipnode')
+      .then(response => response.json())
+      .then(data => {
+        localIP = data.ip;
+        resolve(localIP)
+      });
+    })
+    
+  }
+
+  RemotePanel.prototype.initialize = async function() {
+    
+    const localIP = await getLocalIp()
     var div, icon;
     div = DT.DIV();
     div.style.position = "absolute";
@@ -68,6 +83,29 @@ module.exports = RemotePanel = (function(_super) {
     });
     // div.appendChild(DT.H1("Server Properties"));
     div.appendChild(this.serverProperties);
+    const d = document.createElement('div')
+    
+    d.innerHTML = `
+      <h1>手机代理配置</h1>
+      <div style="font-size:14px;">
+        <p style="color:red">MAC系统调试，无需配置代理</p>
+        <p style="color:red">windows系统代理配置教程点击<a target='_blank' href="https://jingyan.baidu.com/article/425e69e6a64ee0ff15fc1699.html">这里</a></p>
+        <p style="color:red">windows系统根证书，请点击这里<a target='_blank' href="https://ca.c">下载</a></p>
+        <p>第一步：手机和PC保持在同一网络下（比如同时连到一个Wi-Fi下）</p>
+        <p>第二步：设置手机的HTTP代理，代理IP地址设置为PC的IP地址，端口为(56231)。</p>
+        <p>第三步：1、Android设置代理步骤：设置 - WLAN - 长按选中网络 - 修改网络 - 高级 - 代理设置 - 手动
+          2、iOS设置代理步骤：设置 - 无线局域网 - 选中网络 - HTTP代理手动
+        </p>
+        <p>第四步：手机安装证书。注：手机必须先设置完代理后再通过(非微信)手机浏览器访问http://ca.c(地址二维码)安装证书（手机首次调试需要安装证书，已安装了证书的手机无需重复安装)。<a target='_blank' href="https://github.com/wuchangming/spy-debugger/issues/42">https://www.jianshu.com/p/d312ac54c730</a></p>
+        <p>第五步：用手机浏览器访问你要调试的页面即可。</p>
+        <p>IP地址：${localIP}</p>
+        <p>代理端口：56231</p>
+        <p>根证书二维码，扫码下载</p>
+        <img style="width:200px;height:200px;" src="../../images/qrcode.png">
+      </div>
+    `
+    div.appendChild(d);
+
     this.element.appendChild(div);
     return this.reset();
   };

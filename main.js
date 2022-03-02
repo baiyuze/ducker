@@ -69,23 +69,28 @@ class CreateProxyServerAndInitUI {
     const mainWindowChild = new BrowserWindow({
       width: 800,
       height: 800,
-      show: true,
+      show: false,
+      devTools: isDev ? true : false,
       webPreferences: {
         contextIsolation:false,
         nodeIntegration: true
       }
     });
+    mainWindowChild.webContents.openDevTools();
+
     const mainWindow = new BrowserWindow({
-      width: 1000,
-      height: 800,
+      width: 1200,
+      devTools: isDev ? true : false,
+      height: 1000,
       webPreferences: {
         preload: path.join(__dirname, 'preload.js'),
         contextIsolation:false,
-        nodeIntegration: true
+        nodeIntegration: true,
+        nodeIntegrationInSubFrames: true
       }
     });
 
-    const html = isDev ? 'index-prod.html' : 'index-prod.html';
+    const html = isDev ? 'index.html' : 'index-prod.html';
     this.onEventChange(mainWindow)
     mainWindow.loadFile(html);
     mainWindowChild.loadFile('./child.html');

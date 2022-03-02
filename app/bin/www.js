@@ -8,6 +8,7 @@ const { openSystemProxy, closeSystemProxy } = require('../system-proxy')
 const { exec } = require("child_process");
 const { PROXY_WORKER } = require('../../config')
 const path = require('path')
+const log = require('electron-log');
 
 class SystemProxy {
   constructor(mainWindow, startService) {
@@ -26,15 +27,15 @@ class SystemProxy {
       const closePath = path.join(__dirname, '../system-proxy/close.js')
       exec(`node ${closePath}`, (error, stdout, stderr) => {
           if (error) {
-              console.log(`error: ${error.message}`);
+              log.info(`error: ${error.message}`);
               return;
           }
           if (stderr) {
-              console.log(`stderr: ${stderr}`);
+              log.info(`stderr: ${stderr}`);
               return;
           }
           // 系统代理已关闭==
-          console.log(`stdout: ${stdout}`);
+          log.info(`stdout: ${stdout}`);
       });
       app.exit();
     })
@@ -43,7 +44,7 @@ class SystemProxy {
       try {
         await closeSystemProxy();
       } catch (error) {
-        console.log(error,'ERROR')
+        log.info(error,'ERROR')
       }
       app.exit();
     })

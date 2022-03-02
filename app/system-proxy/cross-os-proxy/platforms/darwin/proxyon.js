@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { exec } = require("child_process")
+const log = require('electron-log');
 
 const commandDefault = ['An asterisk (*) denotes that a network service is disabled.','Bluetooth PAN','Thunderbolt Bridge', 'Thunderbolt Bridge 2', ''];
 function shellAsync(command) {
@@ -38,21 +39,26 @@ async function setSystemProxy(host, port) {
       // 筛选有网络的网卡
       for(let i = 0; i < networkArr.length; i++) {
         const networkName = networkArr[i];
-        const log = await shellAsync(`networksetup -getinfo '${networkName}'`);
-        if(log.includes('IP address:')) {
+        const logNet = await shellAsync(`networksetup -getinfo '${networkName}'`);
+        if(logNet.includes('Subnet mask:')) {
           newNetWorkArr.push(networkName);
-          setNetProxy(networkName, host, port, resolve, reject, i, networkArr.length);
-          fs.writeFileSync(path.join(process.cwd(), './app/system-proxy/cross-os-proxy/platforms/darwin/netCatch'), JSON.stringify(newNetWorkArr))
+          await setNetProxy(networkName, host, port, i, networkArr.length);
+          const userHome = process.env.HOME || process.env.USERPROFILE;
+          const filePath = path.resolve(userHome, './node-mitmproxy/netCatch');
+          log.info('filePath' + filePath);
+          fs.writeFileSync(filePath, JSON.stringify(newNetWorkArr))
         }
       }
+      resolve()
     } catch (error) {
-      reject()
+      reject(error)
     }
   })
   
 }
 // 设置网络代理
-async function setNetProxy(networkName, host, port, resolve, reject, i, l) {
+function setNetProxy(networkName, host, port, i, l) {
+  return new Promise(async (resolve, reject) => {
     // 设置网络代理
     try {
       await shellAsync(`networksetup -setautoproxystate '${networkName}' off`);
@@ -61,7 +67,9 @@ async function setNetProxy(networkName, host, port, resolve, reject, i, l) {
       resolve()
     } catch (error) {
       // --
-      reject()
+      reject(error)
     }
+  })
+    
 }
 module.exports = setSystemProxy

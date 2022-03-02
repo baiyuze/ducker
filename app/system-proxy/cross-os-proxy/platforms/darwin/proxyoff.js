@@ -2,6 +2,7 @@ const { exec } = require("child_process");
 const { net } = require("electron");
 const path = require('path');
 const fs = require("fs")
+const log = require('electron-log');
 
 
 function shellAsync(command) {
@@ -19,13 +20,14 @@ function shellAsync(command) {
 function offNetSystemProxy() {
   return new Promise(async (resolve, reject) => {
     try {
-      const net = JSON.parse(fs.readFileSync(path.join(process.cwd(), './app/system-proxy/cross-os-proxy/platforms/darwin/netCatch'), 'utf8')) || []
-      net.forEach(async (name, i) => {
-        
-      })
-      for(let i = 0; i < net.length -1; i++) {
-        const name = net[i];
-        await setNetProxy(name, i, net.length)
+      const userHome = process.env.HOME || process.env.USERPROFILE;
+      const filePath = path.resolve(userHome, './node-mitmproxy/netCatch');
+      log.info('filePath_off' + filePath);
+      const netArr = JSON.parse(fs.readFileSync(filePath, 'utf8')) || []
+      log.info('netArr_off' + netArr);
+      for(let i = 0; i < netArr.length; i++) {
+        const name = netArr[i];
+        await setNetProxy(name, i, netArr.length)
       }
       resolve()
     } catch (error) {
@@ -43,7 +45,7 @@ async function setNetProxy(networkName, i, length) {
       await shellAsync(`networksetup -setwebproxystate '${networkName}' off`);
       await shellAsync(`networksetup -setsecurewebproxystate '${networkName}' off`);
     } catch (error) {
-      console.log(error)
+      log.info(error)
     }
 }
 

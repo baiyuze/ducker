@@ -1,6 +1,7 @@
 const platform = process.platform.toLowerCase()
 const platformsPath = "./platforms"
 const currentOsProxy = require(`${platformsPath}/${platform}`)
+const log = require('electron-log');
 
 /**
  * set system proxy, includes http & https
@@ -9,7 +10,15 @@ const currentOsProxy = require(`${platformsPath}/${platform}`)
  * @returns Promise
  */
 async function setProxy(host, port) {
-  return currentOsProxy.setProxy(host, port)
+  return new Promise(async (resolve, reject) => {
+    try {
+      await currentOsProxy.setProxy(host, port);
+      resolve();
+    } catch (error) {
+      log.error('setProxy: ' + error)
+      reject(error)
+    }
+  })
 }
 
 /**
@@ -22,7 +31,7 @@ function closeProxy() {
       await currentOsProxy.closeProxy();
       resolve();
     } catch (error) {
-      console.log(error,'error')
+      log.info(error,'error_close')
       reject(error);
     }
   })
