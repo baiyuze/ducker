@@ -45,7 +45,7 @@
     "commander": "^2.9.0",
     "cross-os-proxy": "^2.0.0",
     "debug": "^2.2.0",
-    "electron-log": "^4.4.4",
+    "electron-log": "^4.4.6",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^3.21.2",
     "http-proxy": "^1.18.1",
