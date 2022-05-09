@@ -60,7 +60,7 @@
     "nopt": "3.0.x",
     "os-proxy-config": "^1.1.1",
     "program": "^1.0.0",
-    "regedit": "^5.0.0",
+    "regedit": "^5.1.1",
     "sudo-prompt": "^9.2.1",
     "through2": "^2.0.5",
     "tunnel-agent": "^0.6.0",
