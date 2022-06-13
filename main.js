@@ -69,7 +69,7 @@ class CreateProxyServerAndInitUI {
     const mainWindowChild = new BrowserWindow({
       width: 800,
       height: 800,
-      show: false,
+      show: true,
       devTools: isDev ? true : false,
       webPreferences: {
         contextIsolation:false,

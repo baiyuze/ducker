@@ -101,7 +101,10 @@ function startWeinreServer (port, callbackPort) {
                             guiServer.listen(() => {
                                 setTimeout(() => {
                                     var guiPort = guiServer.address().port;
-                                    callbackPort && callbackPort(guiPort, port, webPort)
+                                    // callbackPort && callbackPort(guiPort, port, webPort)
+                                    process.send({
+                                        guiPort, port, webPort
+                                    })
                                 }, 600)
                             });
                             guiServer.on('error', (e) => {

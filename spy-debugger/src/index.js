@@ -6,7 +6,7 @@ const colors = require('colors')
 const http = require('http')
 const { SYSTEM_PROT } = require('../../config/index')
 
-function startProxyServer(callbackPort) {
+function startProxyServer() {
     // program
     //     .version(require('../package.json').version)
     //     .option('-p, --port [value]', 'start port')
@@ -70,8 +70,7 @@ function startProxyServer(callbackPort) {
                 cusShowIframe,
                 cusAutoDetectBrowser: autoDetectBrowser,
                 cusCache,
-                cusContentEditable,
-                callbackPort
+                cusContentEditable
             })
         },
         e => {
@@ -81,5 +80,10 @@ function startProxyServer(callbackPort) {
 
 }
 
-module.exports = startProxyServer
+// module.exports = startProxyServer
+process.on('message', (obj) => {
+    if(obj.type === 'startSpy') {
+        startProxyServer();
+    }
+});
 

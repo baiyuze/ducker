@@ -12,10 +12,21 @@
     const { CHILD_MSG_TO_MAIN } = require('./config')
     const { ipcRenderer } = require('electron')
     const { RenderSendMsgToMain } = require('./app/utils/index')
-    // startProxyService
-    startProxyService((port, debugPort, anyPort) => {
+    const childProcess = require('child_process');
+                
+    var childProxy = childProcess.fork(`${__dirname}/spy-debugger/src/index`);
+    function ipcRendererSend(port, debugPort, anyPort) {
       ipcRenderer.send(CHILD_MSG_TO_MAIN, {
         debugPort, anyPort, pid: 59821
+      })
+    }
+
+    childProxy.send({
+      type: 'startSpy'
+    });
+    childProxy.on('message', ({ guiPort, port, webPort}) => {
+      ipcRenderer.send(CHILD_MSG_TO_MAIN, {
+        debugPort: port, anyPort: webPort, pid: 59821
       })
     })
   </script>

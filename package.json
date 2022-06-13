@@ -9,7 +9,7 @@
     "start": "cp ./config/env.local ./config/env.json && electron-forge start & cd ./app/web && npm start",
     "make": "electron-forge make",
     "build": "cp ./config/env.prod ./config/env.json && node build.js",
-    "build:all": "electron-builder -m"
+    "build:all": "electron-builder -w"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
