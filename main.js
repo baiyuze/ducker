@@ -76,6 +76,7 @@ class CreateProxyServerAndInitUI {
         nodeIntegration: true
       }
     });
+    
     mainWindowChild.webContents.openDevTools();
 
     const mainWindow = new BrowserWindow({
