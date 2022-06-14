@@ -43,7 +43,7 @@
     "babel-polyfill": "^6.13.0",
     "charset": "^1.0.1",
     "colors": "^1.1.2",
-    "commander": "^2.9.0",
+    "commander": "^9.3.0",
     "cross-os-proxy": "^2.0.0",
     "cross-port-killer": "^1.4.0",
     "debug": "^2.2.0",
