@@ -55,7 +55,7 @@ Mac 下
 >  
 第二步：命令行输入`spy-debugger`，按命令行提示用浏览器打开相应地址。
 >  
-第三步：设置手机的HTTP代理，代理IP地址设置为PC的IP地址，端口为`spy-debugger`的启动端口(默认端口：9888)。
+第三步：设置手机的HTTP代理，代理IP地址设置为PC的IP地址，端口为`spy-debugger`的启动端口(默认端口：9999)。
 - Android设置代理步骤：`设置 - WLAN - 长按选中网络 - 修改网络 - 高级 - 代理设置 - 手动`  
 - iOS设置代理步骤：`设置 - 无线局域网 - 选中网络 - HTTP代理手动`  
 >  
@@ -67,15 +67,15 @@ Mac 下
 ------------
 #### 端口
 >  
-(默认端口：56231)
+(默认端口：9999)
 ```
-spy-debugger -p 8888
+spy-debugger -p 9999
 ```
 
 #### 设置外部代理（默认使用AnyProxy）
 >  
 ```
-spy-debugger -e http://127.0.0.1:8888
+spy-debugger -e http://127.0.0.1:9999
 ```
 spy-debugger内置AnyProxy提供抓包功能，但是也可通过设置外部代理和其它抓包代理工具一起使用，如：Charles、Fiddler。
 

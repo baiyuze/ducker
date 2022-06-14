@@ -32,7 +32,9 @@ let createAnyProxy = () => {
     }
     new AnyProxy.ProxyServer(options).start()
 }
-
+process.on('SIGHUP', () => {
+    process.exit(0);
+})
 process.on('message', ({ type, ports }) => {
     if (type === 'start') {
         if (!AnyProxy.utils.certMgr.isRootCAFileExists()) {
@@ -72,6 +74,7 @@ process.on('message', ({ type, ports }) => {
                 webPort,
                 socketPort
             })
+            
         })()
     } else if (type === 'restart') {
         // port = ports.port

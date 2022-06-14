@@ -16,6 +16,7 @@ const childProcess = require('child_process');
 const { Transform } = require('stream');
 var d = domain.create();
 const ip = require('ip');
+const { app } = require('electron')
 
 d.on('error', function(err) {
     console.log(err.message);
@@ -173,6 +174,7 @@ module.exports = {
                 let ports;
 
                 var childProxy = childProcess.fork(`${__dirname}/externalChildProcess`);
+                
                 childProxy.send({
                     type: 'start'
                 });
@@ -182,22 +184,13 @@ module.exports = {
                     var externalProxyWebPort = externalProxyPorts.webPort;
                     externalProxy = 'http://127.0.0.1:' + externalProxyPort;
                     createMitmProxy();
+                    externalProxyPorts.pid = childProxy.pid;
+                    console.log( childProxy.pid,' childProxy.pid')
                     successCB(externalProxyPorts);
                 });
-                let restartFun = () => {
-                    console.log(colors.yellow(`anyproxy异常退出，尝试重启`));
-                    let childProxy = childProcess.fork(`${__dirname}/externalChildProcess`);
-                    // childProxy.send({
-                    //     type: 'restart',
-                    //     ports
-                    // });
-                    // childProxy.on('exit', function(e) {
-                    //     restartFun();
-                    // });
-                };
-                // childProxy.on('exit', function(e) {
-                //     restartFun();
-                // });
+                childProxy.on('SIGHUP', () => {
+                    process.exit(0);
+                })
             });
         } else {
             createMitmProxy();

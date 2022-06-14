@@ -82,6 +82,7 @@ function startProxyServer() {
 
 // module.exports = startProxyServer
 process.on('message', (obj) => {
+    console.log(obj,'objobjobj');
     if(obj.type === 'startSpy') {
         startProxyServer();
     }

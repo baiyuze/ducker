@@ -19,10 +19,14 @@ class CreateProxyServerAndInitUI {
   constructor() {
     this.mainWindow = null;
     this.pid = null;
+    this.renderPid = null;
     this.initWinidow();
   }
 
   installCrt(mainWindow) {
+    ipcMain.on('SYSTEM_PID', (event, arg) => {
+      this.renderPid = arg;
+    })
     ipcMain.on(SYSTEM_CLICK_BTN, async (event, arg) => {
       let msg = null;
       try {
@@ -38,13 +42,6 @@ class CreateProxyServerAndInitUI {
     ipcMain.on(SYSTEM_CLICK_NET_BTN, async (event, arg) => {
       let msg = '测试1下';
       await installCrt();
-      // try {
-      //   // 设置证书
-      //   await setCrt()
-      //   msg = '证书安装完成';
-      // } catch (error) {
-      //   msg = '证书安装失败，请手动安装证书';
-      // }
       mainWindow.webContents.send(SYSTEM_CLICK_NET_BTN_SUCCESS, msg)
     })
 
@@ -56,7 +53,7 @@ class CreateProxyServerAndInitUI {
   }
 
   async createSystemProxyConfig(mainWindow) {
-    new SystemProxy(mainWindow)
+    new SystemProxy(mainWindow, this)
   }
 
   async hideProcessWindow(mainWindowChild, mainWindow) {
@@ -69,7 +66,7 @@ class CreateProxyServerAndInitUI {
     const mainWindowChild = new BrowserWindow({
       width: 800,
       height: 800,
-      show: false,
+      show: true,
       devTools: isDev ? true : false,
       webPreferences: {
         contextIsolation:false,

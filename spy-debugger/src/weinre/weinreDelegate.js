@@ -101,9 +101,10 @@ function startWeinreServer (port, callbackPort) {
                             guiServer.listen(() => {
                                 setTimeout(() => {
                                     var guiPort = guiServer.address().port;
+                                    console.log(externalProxyPorts,'externalProxyPorts')
                                     // callbackPort && callbackPort(guiPort, port, webPort)
                                     process.send({
-                                        guiPort, port, webPort
+                                        guiPort, port, webPort, pid: externalProxyPorts.pid
                                     })
                                 }, 600)
                             });
