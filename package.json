@@ -9,7 +9,8 @@
     "start": "cp ./config/env.local ./config/env.json && electron-forge start & cd ./app/web && npm start",
     "make": "electron-forge make",
     "build": "cp ./config/env.prod ./config/env.json && node build.js",
-    "build:all": "electron-builder -mw"
+    "build:all": "electron-builder -mw",
+    "package": "rm -rf ./dist && electron-packager . 'ducker' --platform=darwin --arch=x64 --out=./dist --asar"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
