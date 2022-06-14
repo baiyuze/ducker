@@ -1,6 +1,6 @@
 {
   "name": "ducker",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
@@ -45,6 +45,7 @@
     "colors": "^1.1.2",
     "commander": "^2.9.0",
     "cross-os-proxy": "^2.0.0",
+    "cross-port-killer": "^1.4.0",
     "debug": "^2.2.0",
     "electron-log": "^4.4.4",
     "electron-squirrel-startup": "^1.0.0",

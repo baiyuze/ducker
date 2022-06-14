@@ -19,6 +19,7 @@ class CreateProxyServerAndInitUI {
   constructor() {
     this.mainWindow = null;
     this.pid = null;
+    this.renderPid = null;
     this.initWinidow();
   }
 
@@ -48,7 +49,9 @@ class CreateProxyServerAndInitUI {
       mainWindow.webContents.send(SYSTEM_CLICK_NET_BTN_SUCCESS, msg)
     })
 
-    
+    ipcMain.on('SYSTEM_PID', (event, arg) => {
+      this.renderPid = arg;
+    })
   }
   
   initWinidow() {
@@ -56,7 +59,7 @@ class CreateProxyServerAndInitUI {
   }
 
   async createSystemProxyConfig(mainWindow) {
-    new SystemProxy(mainWindow)
+    new SystemProxy(mainWindow, this)
   }
 
   async hideProcessWindow(mainWindowChild, mainWindow) {

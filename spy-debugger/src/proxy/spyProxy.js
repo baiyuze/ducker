@@ -181,6 +181,8 @@ module.exports = {
                     var externalProxyPort = externalProxyPorts.port;
                     var externalProxyWebPort = externalProxyPorts.webPort;
                     externalProxy = 'http://127.0.0.1:' + externalProxyPort;
+                    externalProxyPorts.pid = childProxy.pid;
+                    console.log( childProxy.pid,' childProxy.pid')
                     createMitmProxy();
                     successCB(externalProxyPorts);
                 });

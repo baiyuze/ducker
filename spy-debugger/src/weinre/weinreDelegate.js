@@ -103,7 +103,7 @@ function startWeinreServer (port, callbackPort) {
                                     var guiPort = guiServer.address().port;
                                     // callbackPort && callbackPort(guiPort, port, webPort)
                                     process.send({
-                                        guiPort, port, webPort
+                                        guiPort, port, webPort, pid: externalProxyPorts.pid
                                     })
                                 }, 600)
                             });

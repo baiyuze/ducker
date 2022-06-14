@@ -6,15 +6,17 @@ const { app } = require('electron')
 const cluster = require('cluster')
 const { openSystemProxy, closeSystemProxy } = require('../system-proxy')
 const { exec } = require("child_process");
-const { PROXY_WORKER } = require('../../config')
+const { PROXY_WORKER, SYSTEM_PROT } = require('../../config')
 const path = require('path')
 const log = require('electron-log');
+const { kill } = require('cross-port-killer');
 
 class SystemProxy {
-  constructor(mainWindow, startService) {
+  constructor(mainWindow, Main) {
     this.workMap = {
       [PROXY_WORKER]: null
     }
+    this.Main = Main;
     this.mainWindow = mainWindow;
 
     this.createWorkProcess()
@@ -42,6 +44,8 @@ class SystemProxy {
     app.on('before-quit',async (event) => {
       event.preventDefault();
       try {
+        this.Main.renderPid && process.kill(this.Main.renderPid, 'SIGHUP');
+        await kill(SYSTEM_PROT);
         await closeSystemProxy();
       } catch (error) {
         log.info(error,'ERROR')

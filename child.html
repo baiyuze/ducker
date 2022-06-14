@@ -15,16 +15,12 @@
     const childProcess = require('child_process');
                 
     var childProxy = childProcess.fork(`${__dirname}/spy-debugger/src/index`);
-    function ipcRendererSend(port, debugPort, anyPort) {
-      ipcRenderer.send(CHILD_MSG_TO_MAIN, {
-        debugPort, anyPort, pid: 59821
-      })
-    }
 
     childProxy.send({
       type: 'startSpy'
     });
-    childProxy.on('message', ({ guiPort, port, webPort}) => {
+    childProxy.on('message', ({ guiPort, port, webPort, pid}) => {
+      ipcRenderer.send('SYSTEM_PID', pid);
       ipcRenderer.send(CHILD_MSG_TO_MAIN, {
         debugPort: port, anyPort: webPort, pid: 59821
       })
