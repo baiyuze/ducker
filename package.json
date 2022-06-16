@@ -33,7 +33,7 @@
     "electron": "^15.3.0",
     "electron-builder": "^22.14.5",
     "mocha": "^6.1.4",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.5"
   },
   "dependencies": {
     "agentkeepalive": "^4.1.4",
