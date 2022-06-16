@@ -10,13 +10,18 @@ module.exports = function createConnectHandler(sslConnectInterceptor, fakeServer
     return function connectHandler (req, cltSocket, head) {
 
         var srvUrl = url.parse(`https://${req.url}`);
-
+        const filterArr = ['wkbrs2.tingyun.com', 'px.effirst.com'];
         if (typeof sslConnectInterceptor === 'function' && sslConnectInterceptor.call(null, req, cltSocket, head)) {
-            fakeServerCenter.getServerPromise(srvUrl.hostname, srvUrl.port).then((serverObj) => {
-                connect(req, cltSocket, head, localIP, serverObj.port);
-            }, (e) => {
-                console.error(e);
-            });
+            if(filterArr.includes(srvUrl.hostname)) {
+                connect(req, cltSocket, head, srvUrl.hostname, srvUrl.port);
+            } else {
+                fakeServerCenter.getServerPromise(srvUrl.hostname, srvUrl.port).then((serverObj) => {
+                    connect(req, cltSocket, head, localIP, serverObj.port);
+                }, (e) => {
+                    console.error(e);
+                });
+            }
+            
         } else {
             connect(req, cltSocket, head, srvUrl.hostname, srvUrl.port);
         }

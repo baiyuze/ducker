@@ -14,7 +14,7 @@
     left: 0;
     bottom: 0;
     overflow: hidden;
-    -webkit-user-select: none;
+    -webkit-user-select: auto;
 }
 
 .text-editor-contents {
@@ -33,7 +33,7 @@
 
 .webkit-line-decorations {
     pointer-events: none;
-    -webkit-user-select: none;
+    -webkit-user-select: auto;
     -webkit-user-modify: read-only;
 }
 

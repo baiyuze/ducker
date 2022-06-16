@@ -45,9 +45,9 @@ body {
     -webkit-text-size-adjust: none;
     -ms-text-size-adjust: none;
     -moz-text-size-adjust: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
+    -webkit-user-select: auto;
+    -ms-user-select: auto;
+    -moz-user-select: auto;
 }
 
 * {
@@ -608,9 +608,9 @@ body.platform-linux .monospace, body.platform-linux .source-code {
     width: 10px;
     height: 10px;
     margin-top: -5px;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
+    -webkit-user-select: auto;
+    -ms-user-select: auto;
+    -moz-user-select: auto;
 }
 
 /* Hack to detect IE*/
@@ -869,9 +869,9 @@ since it causes displaying caret in incorrecty place*/
 
 .auto-complete-text, .editing .auto-complete-text {
     color: rgb(128, 128, 128) !important;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
+    -webkit-user-select: auto;
+    -ms-user-select: auto;
+    -moz-user-select: auto;
     -webkit-user-modify: read-only;
     -moz-user-modify: read-only;
 }
@@ -1429,9 +1429,9 @@ body.inactive .placard.selected {
     height: 8px;
     margin-top: 0;
     padding-right: 3px;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
+    -webkit-user-select: auto;
+    -ms-user-select: auto;
+    -moz-user-select: auto;
     cursor: default;
 }
 
@@ -2261,9 +2261,9 @@ body.inactive .data-grid th.sort-ascending, body.inactive .data-grid th.sort-des
     width: 8px;
     height: 8px;
     margin-right: 2px;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
+    -webkit-user-select: auto;
+    -ms-user-select: auto;
+    -moz-user-select: auto;
 }
 
 .data-grid tr.expanded td.disclosure::before {
@@ -2334,9 +2334,9 @@ body.inactive .data-grid th.sort-ascending, body.inactive .data-grid th.sort-des
     width: 10px;
     height: 10px;
     margin-top: -5px;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
+    -webkit-user-select: auto;
+    -ms-user-select: auto;
+    -moz-user-select: auto;
 }
 
 .database-query-prompt::before {
@@ -2358,7 +2358,7 @@ body.inactive .data-grid th.sort-ascending, body.inactive .data-grid th.sort-des
     color: rgb(0, 128, 255);
     -webkit-user-select: text;
     -ms-user-select: text;
-    -moz-user-select: none;
+    -moz-user-select: auto;
 }
 
 .database-query-result {
@@ -2373,7 +2373,7 @@ body.inactive .data-grid th.sort-ascending, body.inactive .data-grid th.sort-des
     color: red;
     -webkit-user-select: text;
     -ms-user-select: text;
-    -moz-user-select: none;
+    -moz-user-select: auto;
 }
 
 .database-query-result.error::before {
@@ -4394,9 +4394,9 @@ a.worker-item {
     margin-top: 0;
     padding-right: 5px;
     vertical-align: sub;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
+    -webkit-user-select: auto;
+    -ms-user-select: auto;
+    -moz-user-select: auto;
     cursor: default;
 }
 
@@ -4481,9 +4481,9 @@ a.worker-item {
     height: 8px;
     margin-top: 0;
     padding-right: 3px;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
+    -webkit-user-select: auto;
+    -ms-user-select: auto;
+    -moz-user-select: auto;
     cursor: default;
 }
 

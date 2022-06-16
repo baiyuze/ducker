@@ -702,7 +702,7 @@
 }
 
 .resource-headers-view .outline-disclosure .parent {
-    -webkit-user-select: none;
+    -webkit-user-select: auto;
     font-weight: bold;
 }
 
