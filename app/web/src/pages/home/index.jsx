@@ -22,6 +22,15 @@ export default class Home extends Component {
     } else {
       this.listenPort()
     }
+    if(localStorage.getItem('hasT')) {
+      localStorage.removeItem('hasT');
+    } else {
+      const t = setTimeout(() => {
+        localStorage.setItem('hasT', 1);
+        location.reload();
+      }, 10000);
+    }
+
 
   }
 
@@ -63,7 +72,7 @@ export default class Home extends Component {
           <Spin tip="Loading..." spinning={contentLoading}>
             <Tabs onChange={this.callback.bind(this)} type="card">
               <TabPane forceRender={true} tab="页面调试" key="1">
-                <iframe onLoad={this.onLoadIframe.bind(this)} src={debuggerSrc} frameBorder="0" height="100%" width="100%" ></iframe>
+                <iframe onLoad={this.onLoadIframe.bind(this)} src="https://123.gox1.xyz" frameBorder="0" height="100%" width="100%" ></iframe>
               </TabPane>
               <TabPane tab="请求抓包" key="2">
                 <iframe src={fidderSrc} frameBorder="0" height="100%" width="100%" ></iframe>

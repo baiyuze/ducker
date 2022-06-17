@@ -81,6 +81,7 @@ processOptions = function(options, cb) {
 };
 
 checkHost = function(hostName, cb) {
+  
   if (hostName === '-all-') {
     return cb();
   }

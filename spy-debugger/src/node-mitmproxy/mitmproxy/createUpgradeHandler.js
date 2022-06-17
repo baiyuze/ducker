@@ -22,6 +22,14 @@ module.exports = function createUpgradeHandler() {
         });
 
         proxyReq.on('upgrade', function(proxyRes, proxySocket, proxyHead) {
+            // if(rOptions.headers.host === config.GOO_DEVTOOLS_XX) {
+            //     rOptions.protocol = 'ws:';
+            //     rOptions.hostname = '127.0.0.1';
+            //     rOptions.port = 8899;
+            //     // trick for non-transparent proxy
+            //     rOptions.path = rPath;
+            //     rOptions.agent = false;
+            // }
             proxySocket.on('error', (e) => {
                 console.error(e);
             });

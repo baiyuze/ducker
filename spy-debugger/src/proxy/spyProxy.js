@@ -95,7 +95,7 @@ module.exports = {
                             res.setHeader("Content-Disposition","attachment;filename=node-mitmproxy.ca.crt");
                             res.end(fileString.toString());
                         } catch (e) {
-                            console.log(e);
+                            console.log(e,444);
                             res.end('please create certificate first!!');
                         }
                         next();
@@ -213,14 +213,14 @@ function chunkReplace(chunk, injectScriptTag, proxyRes) {
     try {
         _charset =  charset(proxyRes, chunk) || jschardet.detect(chunk).encoding.toLowerCase();
     } catch (e) {
-        console.error(e);
+        console.error(e,111);
     }
     var chunkString;
     if (_charset != null && _charset != 'utf-8') {
         try {
             chunkString = iconv.decode(chunk, _charset);
         } catch (e) {
-            console.error(e);
+            console.error(e,222);
             chunkString = iconv.decode(chunk, 'utf-8');
         }
     } else {
@@ -234,7 +234,7 @@ function chunkReplace(chunk, injectScriptTag, proxyRes) {
         try {
             buffer = iconv.encode(newChunkString, _charset);
         } catch (e) {
-            console.error(e);
+            console.error(e,333);
             buffer = iconv.encode(newChunkString, 'utf-8');
         }
     } else {

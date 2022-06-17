@@ -10,8 +10,9 @@ module.exports = function createConnectHandler(sslConnectInterceptor, fakeServer
     return function connectHandler (req, cltSocket, head) {
 
         var srvUrl = url.parse(`https://${req.url}`);
-        const filterArr = ['wkbrs2.tingyun.com', 'px.effirst.com'];
+        const filterArr = ['wkbrs2.tingyun.com', 'px.effirst.com','127.0.0.1:8899','192.168.1.149:8899'];
         if (typeof sslConnectInterceptor === 'function' && sslConnectInterceptor.call(null, req, cltSocket, head)) {
+
             if(filterArr.includes(srvUrl.hostname)) {
                 connect(req, cltSocket, head, srvUrl.hostname, srvUrl.port);
             } else {

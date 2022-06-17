@@ -28,7 +28,8 @@ let createAnyProxy = () => {
             webPort
         },
         dangerouslyIgnoreUnauthorized: true,
-        silent: true //optional, do not print anything into terminal. do not set it when you are still debugging.
+        silent: true, //optional, do not print anything into terminal. do not set it when you are still debugging.
+        wsIntercept: true,
     }
     new AnyProxy.ProxyServer(options).start()
 }
