@@ -3,5 +3,5 @@
 
 支持MacOS和windows
 
-![1](./img/1.png)
+![1](./img/20220629164445.jpg)
 ![2](./img/2.png)
